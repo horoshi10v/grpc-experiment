@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package experiment;
+
+// Додайте наступний рядок для визначення Go пакету
+option go_package = "./proto;experiment";
+
+// Опис сервісу gRPC
+service ExperimentService {
+  // Синхронний метод запит-відповідь
+  rpc RequestResponse (Request) returns (Response);
+
+  // Асинхронний метод потокової взаємодії (streaming)
+  rpc StreamRequestResponse (stream Request) returns (stream Response);
+
+  // Метод для публікації (публікація події)
+  rpc PublishEvent (Event) returns (EventAck);
+
+  // Метод для підписки (передаємо потік подій)
+  rpc SubscribeEvents (Empty) returns (stream Event);
+}
+
+// Повідомлення запиту
+message Request {
+  string message = 1;
+}
+
+// Повідомлення відповіді
+message Response {
+  string message = 1;
+}
+
+// Подія для публікації
+message Event {
+  string event_id = 1;
+  string event_data = 2;
+}
+
+// Підтвердження отримання події
+message EventAck {
+  string ack_id = 1;
+  string status = 2; // Наприклад, "SUCCESS" або "FAILURE"
+}
+
+// Порожнє повідомлення для запитів без параметрів
+message Empty {}

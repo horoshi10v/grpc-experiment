@@ -2,20 +2,15 @@ package main
 
 import (
 	"context"
-	"github.com/prometheus/client_golang/prometheus"
 	"log"
 	"time"
 
 	pb "github.com/horoshi10v/grpc-experiment/proto"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
-// Змінити ім'я типу на responseServer, якщо використовуєте другий варіант
-type responseServer struct {
-	pb.UnimplementedExperimentServiceServer
-}
-
-// Реалізація методу RequestResponse
-func (s *responseServer) RequestResponse(ctx context.Context, req *pb.Request) (*pb.Response, error) {
+// Реалізація методу RequestResponse для структури server
+func (s *server) RequestResponse(ctx context.Context, req *pb.Request) (*pb.Response, error) {
 	GrpcRequestsTotal.Inc()                           // Використання глобальної метрики
 	timer := prometheus.NewTimer(GrpcRequestDuration) // Використання глобальної метрики
 	defer timer.ObserveDuration()

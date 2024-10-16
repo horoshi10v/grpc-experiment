@@ -10,6 +10,7 @@ import (
 
 	pb "github.com/horoshi10v/grpc-experiment/proto"
 	"github.com/horoshi10v/grpc-experiment/server/pubsub"
+	_ "github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
 )
 
@@ -60,8 +61,6 @@ func main() {
 			log.Fatalf("failed to serve: %v", err)
 		}
 	}()
-
-	// Тут НЕ потрібно повторно реєструвати маршрут /metrics, оскільки він вже зареєстрований у metrics.go
 
 	// Очікування сигналу завершення роботи для коректного завершення
 	sigs := make(chan os.Signal, 1)
